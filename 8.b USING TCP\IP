@@ -1,0 +1,395 @@
+Phonedirectory: 
+
+import java.util.*; import java.io.*; public 
+
+class PhoneDirectory { private Map 
+
+pbMap = new HashMap(); public 
+
+PhoneDirectory(String fileName) { 
+
+ // Initial content of the phone book 
+
+ // is read from the file 
+
+ // storing lines of the form: name phone_number 
+
+ try { 
+
+ BufferedReader br = new BufferedReader( 
+
+new FileReader(fileName)); String line; 
+
+while ((line = br.readLine()) != null) { 
+
+String[] info = line.split(" +", 2); 
+
+pbMap.put(info[0], info[1]); }} catch 
+
+(Exception exc) { exc.printStackTrace(); 
+
+ System.exit(1); 
+
+ } 
+
+ } 
+
+ // Returns the phone number of the given person public String getPhoneNumber(String name) { return 
+
+(String) pbMap.get(name); 
+
+ }
+
+// Adds a new entry to the book 
+
+// The result: 
+
+ // - true - the entry was added 
+
+ // - false - the entry was not added 
+
+ // (the book associates another number with the given person) 
+
+public boolean addPhoneNumber(String name, String num) { if 
+
+(pbMap.containsKey(name)) return false; pbMap.put(name, num); 
+
+ return true; 
+
+ // Replaces the phone number of the given person 
+
+ // The result: 
+
+ // - true (success) 
+
+ // - false (failure - the given person does not exist) public 
+
+boolean replacePhoneNumber(String name, String num) { if 
+
+(!pbMap.containsKey(name)) return false; pbMap.put(name, 
+
+num); 
+
+ return true; 
+
+ } 
+
+} 
+
+PhoneBookServer: 
+
+import java.net.*; import java.io.*; import java.util.regex.*; public class 
+
+PhoneBookServer { private PhoneDirectory pd = null; // the map 
+
+associating names and numbers private ServerSocket ss = null; private
+
+BufferedReader in = null; // socket streams private PrintWriter out = null; 
+
+// for communicating with the client public 
+
+PhoneBookServer(PhoneDirectory pd, ServerSocket ss) { 
+
+ this.pd = pd; 
+
+this.ss = ss; 
+
+ System.out.println("This program is done by SANTHOSH 221211101132"); 
+
+ System.out.println("Server started"); 
+
+ System.out.println("on port: " + ss.getLocalPort()); 
+
+System.out.println("bind address: " + ss.getInetAddress()); 
+
+serviceConnections(); // listen to connections } 
+
+ // The method listens for connections made by clients. 
+
+ // After accepting a connection it creates a new Socket // 
+
+and calls the method serviceRequest to handle the request 
+
+private void serviceConnections() { 
+
+ boolean serverRunning = true; // the server is running continously 
+
+while (serverRunning) { 
+
+ try { 
+
+ Socket conn = ss.accept(); // listens and accepts connections 
+
+System.out.println("Connection established"); serviceRequests(conn); 
+
+// handle the request 
+
+ } catch (Exception exc)
+
+{ 
+
+exc.printStackTrace(); 
+
+ } 
+
+ } // close the cosket 
+
+try { ss.close(); } catch (Exception exc) {} 
+
+ } 
+
+ // the pattern for parsing requests private static Pattern 
+
+reqPatt = Pattern.compile(" +", 3); // Server messages. 
+
+ // The corresponding codes are indices of the array. 
+
+ private static String msg[] = { "Ok", "Invalid request", "Not found", 
+
+ "Couldn't add - entry already exists", 
+
+ "Couldn't replace non-existing entry", 
+
+ }; 
+
+ // Handling client's request 
+
+ private void serviceRequests(Socket connection) 
+
+ throws IOException { try { in = new 
+
+BufferedReader( // create the streams 
+
+new InputStreamReader( 
+
+connection.getInputStream())); out = new PrintWriter( 
+
+connection.getOutputStream(), true); 
+
+ // Parse the request for (String line; (line = 
+
+in.readLine()) != null; ) {
+
+String resp; // answer 
+
+ String[] req = reqPatt.split(line, 3); 
+
+String cmd = req[0]; // command if 
+
+(cmd.equals("bye")) { // end of message 
+
+writeResp(0, null); break; 
+
+ } 
+
+ else if (cmd.equals("get")) { // get the number 
+
+if (req.length != 2) writeResp(1, null); else { 
+
+ String phNum = (String) pd.getPhoneNumber(req[1]); 
+
+if (phNum == null) writeResp(2, null); 
+
+ else writeResp(0, phNum); 
+
+ } 
+
+ } 
+
+ else if (cmd.equals("add")) { // add a number 
+
+if (req.length != 3) writeResp(1, null); else { 
+
+ boolean added = pd.addPhoneNumber(req[1], req[2]); 
+
+ if (added) writeResp(0, null); 
+
+else writeResp(3, null); 
+
+ } 
+
+ }
+
+else if (cmd.equals("replace")) { // change the number 
+
+if (req.length != 3) writeResp(1, null); else { 
+
+ boolean replaced = pd.replacePhoneNumber(req[1], req[2]); 
+
+if (replaced) writeResp(0, null); else writeResp(4, null); 
+
+ } 
+
+ } else writeResp(1, null); // invalid 
+
+request 
+
+ } 
+
+ } 
+
+catch (Exception exc) 
+
+{ 
+
+exc.printStackTrace(); 
+
+ } finally { 
+
+ try { // close the streams 
+
+in.close(); // and the socket 
+
+out.close(); connection.close(); 
+
+connection = null; 
+
+ } catch (Exception exc) { } 
+
+ } 
+
+ }
+
+// Pass the response to the client private void writeResp(int rc, 
+
+String addMsg) throws IOException { out.println(rc + " " + 
+
+msg[rc]); if (addMsg != null) out.println(addMsg); 
+
+ } 
+
+ public static void main(String[] args) { 
+
+ PhoneDirectory pd = null; 
+
+ ServerSocket ss = null; 
+
+ try { 
+
+ String phdFileName = args[0]; String host = args[1]; int port = 
+
+Integer.parseInt(args[2]); pd = new PhoneDirectory(phdFileName); // create the 
+
+map (read data from the file) InetSocketAddress isa = new 
+
+InetSocketAddress(host, port); ss = new ServerSocket(); // create the 
+
+server socket ss.bind(isa); // and bind it to the address 
+
+ } catch(Exception exc) { 
+
+exc.printStackTrace(); 
+
+ System.exit(1); 
+
+ } 
+
+ new PhoneBookServer(pd, ss); 
+
+ } 
+
+}
+
+PhoneBookClient: 
+
+import java.net.*; import 
+
+java.io.*; public class 
+
+PhoneBookClient 
+
+{ private Socket sock = null; private 
+
+PrintWriter out = null; private BufferedReader 
+
+in = null; public PhoneBookClient(String host, 
+
+int port) { 
+
+ try { sock = new Socket(host, port); out = new 
+
+PrintWriter(sock.getOutputStream(), true); in = new 
+
+BufferedReader( new InputStreamReader( 
+
+sock.getInputStream())); 
+
+System.out.println("This Program is done by SANTHOSH 221211101132"); 
+
+ makeRequest("get Kermit"); 
+
+makeRequest("get Piggy"); makeRequest("add 
+
+Gonzo 77777"); makeRequest("add Gonzo"); 
+
+makeRequest("get Gonzo"); 
+
+makeRequest("add Gonzo 333333"); 
+
+makeRequest("replace Gonzo 333333"); 
+
+makeRequest("replace Piggy 202020"); 
+
+makeRequest("get Gonzo");
+
+makeRequest("add"); makeRequest(""); 
+
+makeRequest("bye"); 
+
+ in.close(); 
+
+out.close(); 
+
+sock.close(); 
+
+ } catch (UnknownHostException e) 
+
+{ 
+
+ System.err.println("Unknown host: "+host); 
+
+ System.exit(2); 
+
+ } catch (IOException e) { 
+
+ System.err.println("I/O error for"); 
+
+ System.exit(3); 
+
+ } 
+
+catch (Exception exc) { 
+
+exc.printStackTrace(); 
+
+ System.exit(4); 
+
+ } 
+
+ } 
+
+ private boolean makeRequest(String req) throws IOException { 
+
+System.out.println("Request: " + req); out.println(req);
+
+String resp = in.readLine(); 
+
+System.out.println(resp); boolean 
+
+ok = resp.startsWith("0"); if 
+
+(req.startsWith("get") && ok) 
+
+System.out.println(in.readLine()); 
+
+return ok; 
+
+ } 
+
+ public static void main(String[] args) { new 
+
+PhoneBookClient(args[0], Integer.parseInt(args[1])); 
+
+ } 
+
+}
