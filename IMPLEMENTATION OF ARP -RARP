@@ -1,0 +1,101 @@
+import java.io.*; 
+import java.util.*; 
+publicclassarp_rarp
+{
+privatestaticfinalStringCommand="arp-a";
+publicstaticvoidgetARPTable(Stringcmd)throws Exception
+{
+File fp=new File("ARPTable.txt");FileWriter 
+fw=new FileWriter(fp); 
+BufferedWriterbw=newBufferedWriter(fw); 
+ProcessP=Runtime.getRuntime().exec(cmd);
+ScannerS=newScanner(P.getInputStream()).useDelimiter("\\A"); 
+while(S.hasNext())
+bw.write(S.next());
+bw.close();fw.close();
+}
+publicstaticvoidfindMAC(Stringip)throwsException{ File 
+fp=new File("ARPTable.txt");
+FileReader fr=new FileReader(fp); 
+BufferedReaderbr=newBufferedReader(fr); 
+String line;   
+
+while((line=br.readLine())!=null)
+
+{
+
+if(line.contains(ip))
+
+{
+
+System.out.println("InternetAddressPhysicalAddressType"); 
+
+System.out.println(line);
+
+break;
+
+}}
+
+if(line==null) 
+
+System.out.println("Notfound"); 
+
+fr.close();br.close();
+
+}
+
+publicstaticvoidfindIP(Stringmac)throwsException
+
+{
+
+File fp=new File("ARPTable.txt"); 
+
+FileReader fr=new FileReader(fp); 
+
+BufferedReaderbr=newBufferedReader(fr); 
+
+String line; 
+
+while((line=br.readLine())!=null){ 
+
+if(line.contains(mac)){
+
+System.out.println("InternetAddressPhysicalAddressType"); 
+
+System.out.println(line);
+
+break;
+
+}}
+
+if(line==null) 
+
+System.out.println("NotFound"); 
+
+fr.close();
+
+br.close();
+
+}
+
+publicstaticvoid main(Stringargs[])throws Exception{
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); getARPTable(Command);
+
+Scanner S=new Scanner(System.in); 
+
+System.out.println("ARP Protocol"); 
+
+String IP=S.nextLine();findMAC(IP); 
+
+System.out.println("RARPProtocol");
+
+System.out.print("EnterMACAddress:"); 
+
+String MAC=S.nextLine();
+
+findIP(MAC);
+
+}
+
+}
