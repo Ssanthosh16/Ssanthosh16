@@ -1,0 +1,85 @@
+SERVER
+
+import java.io.*; 
+
+importjava.net.*; 
+
+class Filesender
+
+{
+
+publicstaticvoid main(Stringargs[])throwsIOException
+
+{
+
+ServerSocketss=newServerSocket(7777); 
+
+Socket s=ss.accept();
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); System.out.println("connected...");
+
+FileInputStreamfin=newFileInputStream("C://Users//asus//Desktop//yoga1616//exp4//send.txt"); 
+
+DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+
+int r; 
+
+while((r=fin.read())!=-1){ 
+
+dout.write(r);
+
+}
+
+System.out.println("\nFiletransfercompleted"); 
+
+s.close();
+
+ss.close();
+
+}}
+
+CLIENT
+
+30
+
+import java.io.*; 
+
+importjava.net.*; 
+
+classFilereceiver
+
+{
+
+publicstaticvoidmain(Stringargs[])throwsIOException{ 
+
+Socket s=new Socket("127.0.0.1",7777); 
+
+if(s.isConnected())
+
+{
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); System.out.println("connected to 
+
+server");
+
+}
+
+FileOutputStreamfout=newFileOutputStream("C://Users//asus//Desktop//yoga1616//exp4//Receive.txt"); 
+
+DataInputStream din=new DataInputStream(s.getInputStream());
+
+int r; 
+
+while((r=din.read())!=-1)
+
+{
+
+fout.write((char)r);
+
+}
+
+s.close();
+
+}
+
+}
