@@ -1,0 +1,169 @@
+SERVER
+
+import java.net.*; 
+
+import java.io.*; 
+
+publicclassServer
+
+{
+
+private Socket socket = null; 
+
+privateServerSocketserver=null; 
+
+privateDataInputStream in=null; 
+
+public Server(int port)
+
+{
+
+try{
+
+server=newServerSocket(port);
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); System.out.println("Server started");
+
+System.out.println("Waitingforaclient..."); 
+
+socket = server.accept(); 
+
+System.out.println("Client accepted");
+
+in= new DataInputStream(
+
+newBufferedInputStream(socket.getInputStream())); 
+
+String line = "";
+
+while (!line.equals("Over"))
+
+  {
+
+try{
+
+line = in.readUTF(); 
+
+System.out.println(line);
+
+}
+
+catch(IOException i)
+
+{
+
+System.out.println(i);
+
+}}
+
+System.out.println("Closingconnection"); 
+
+socket.close();
+
+in.close();
+
+}
+
+catch(IOException i)
+
+{
+
+System.out.println(i);
+
+}}
+
+publicstatic void main(String args[])
+
+{
+
+Serverserver=newServer(5000);
+
+}
+
+}
+
+CLIENT
+
+import java.net.*; 
+
+import java.io.*; 
+
+publicclassClient
+
+{
+
+privateSocketsocket=null;
+
+privateDataInputStreaminput=null; 
+
+privateDataOutputStreamout=null; 
+
+publicClient(Stringaddress,intport)
+
+{
+
+try{
+
+socket=newSocket(address,port);
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); System.out.println("Connected");
+
+input=new DataInputStream(System.in);
+
+out=new DataOutputStream(socket.getOutputStream());
+
+}
+
+catch(UnknownHostExceptionu)
+
+{
+
+System.out.println(u);} 
+
+catch(IOException i){ 
+
+System.out.println(i);
+
+ }
+
+String line ="";
+
+while (!line.equals("Over"))
+
+{
+
+try{
+
+line=input.readLine(); 
+
+out.writeUTF(line);} 
+
+catch(IOException i){ 
+
+System.out.println(i);
+
+}}
+
+try{ 
+
+input.close(); 
+
+out.close(); 
+
+socket.close();
+
+}
+
+catch(IOExceptioni){ 
+
+System.out.println(i);
+
+}}
+
+publicstatic void main(String args[]){
+
+Clientclient =new Client("127.0.0.1", 5000);
+
+}
+
+} 
