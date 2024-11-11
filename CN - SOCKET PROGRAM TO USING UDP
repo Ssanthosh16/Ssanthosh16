@@ -1,0 +1,121 @@
+SERVER
+
+import java.io.IOException; 
+
+import java.net.DatagramPacket; 
+
+importjava.net.DatagramSocket; 
+
+import java.net.InetAddress; 
+
+importjava.net.SocketException; 
+
+public class udpBaseServer
+
+{
+
+publicstatic void main(String[]args)throwsIOException
+
+{DatagramSocketds=newDatagramSocket(1234); 
+
+byte[] receive = new byte[65535];
+
+DatagramPacketDpReceive=null;
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); while (true)
+
+{
+
+DpReceive=newDatagramPacket(receive,receive.length); 
+
+ds.receive(DpReceive);
+
+System.out.println("Client:-"+data(receive)); if 
+
+(data(receive).toString().equals("bye"))
+
+{
+
+System.out.println("Clientsentbye. .....EXITING");
+
+break;
+
+}
+
+receive=new byte[65535];
+
+}
+
+}
+
+publicstaticStringBuilderdata(byte[]a)
+
+{
+
+if(a==null) 
+
+return null;
+
+StringBuilderret=newStringBuilder(); int 
+
+i = 0;
+
+while(a[i]!=0)
+
+{
+
+ret.append((char)a[i]); 
+
+i++;
+
+}
+
+returnret;
+
+}
+
+}
+
+CLIENT
+
+25
+
+import java.io.IOException; 
+
+importjava.net.DatagramPacket; 
+
+importjava.net.DatagramSocket; 
+
+import java.net.InetAddress; 
+
+import java.util.Scanner;
+
+publicclass udpBaseClient
+
+{
+
+publicstaticvoid main(Stringargs[])throwsIOException{
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); Scanner sc = new 
+
+Scanner(System.in);
+
+DatagramSocketds=newDatagramSocket(); 
+
+InetAddressip=InetAddress.getLocalHost(); 
+
+byte buf[] = null;
+
+while (true){
+
+Stringinp=sc.nextLine(); 
+
+buf = inp.getBytes();
+
+DatagramPacketDpSend=newDatagramPacket(buf,buf.length,ip,1234); ds.send(DpSend);
+
+if(inp.equals("bye")) 
+
+break;
+
+}}}
