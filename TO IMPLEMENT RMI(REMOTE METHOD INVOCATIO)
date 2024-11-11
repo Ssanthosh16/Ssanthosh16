@@ -1,0 +1,99 @@
+SERVER:
+
+import java.rmi.*; 
+
+importjava.rmi.server.*;
+
+classRMIServerextendsUnicastRemoteObjectimplementsmyinterface
+
+{
+
+public RMIServer()throws RemoteException{ 
+
+System.out.println("RemoteServerisrunningNow.!!");
+
+}
+
+publicstatic void main(String arg[]){
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); try{
+
+RMIServerp=new RMIServer();Naming.rebind("rmiInterface",p);
+
+}catch(Exception e)
+
+{System.out.println("Exceptionoccurred:"+e.getMessage());
+
+}}
+
+public String countInput(String input) throws RemoteExceptio{
+
+System.out.println("Receivedyourinput"+input+"atserver!!"); 
+
+String reply;
+
+reply="Youhavetyped"+input.length()+"letters!!";returnreply;
+
+}
+
+}
+
+CLIENT:
+
+52
+
+import java.rmi.*; 
+
+import 
+
+java.io.*;publicclassR
+
+MIClient
+
+{
+
+publicstatic voidmain(String args[])
+
+{
+
+System.out.println("ThisprogramisdonebySURESH S221211101143"); try
+
+{
+
+BufferedReaderbr=newBufferedReader(newInputStreamReader(System.in)); 
+
+myinterface p=( myinterface)Naming.lookup("rmiInterface"); 
+
+System.out.println("Type something...");
+
+String input=br.readLine(); 
+
+System.out.println(p.countInput(input));
+
+}
+
+catch(Exception e)
+
+{
+
+System.out.println("Exceptionoccurred:"+e.getMessage());
+
+}
+
+}
+
+}
+
+MYINTERFACE
+
+53
+
+import java.rmi.*;
+
+publicinterfacemyinterfaceextendsRemote
+
+{
+
+publicStringcountInput(Stringinput)throwsRemoteException;
+
+}
