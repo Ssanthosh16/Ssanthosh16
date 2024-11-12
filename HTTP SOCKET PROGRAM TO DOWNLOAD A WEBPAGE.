@@ -1,73 +1,38 @@
-package normal; 
-
-import java.io.*; 
-
-importjava.net.URL;
-
+package normal;
+import java.io.*;
+import java.net.URL;
 import java.net.MalformedURLException;
-
-publicclassMain {
-
-publicstaticvoidDownloadWebPage(Stringwebpage)
-
+public class Main {
+public static void DownloadWebPage(String webpage)
 {
-
 try {
-
-URLurl=new URL(webpage);
-
-BufferedReaderreadr=newBufferedReader(newInputStreamReader(url.openStream())); 
-
+URL url = new URL(webpage);
+BufferedReader readr = new BufferedReader(new InputStreamReader(url.openStream()));
 BufferedWriter writer = new BufferedWriter(new FileWriter("Data.html"));
-
 String line;
-
-while((line=readr.readLine())!=null)
-
+while ((line = readr.readLine()) != null)
 {
-
 writer.write(line);
-
 }
-
-readr.close(); 
-
+readr.close();
 writer.close();
-
-System.out.println("THISPROGRAMISEXECUTEDBYSURESH S221211101143");
-
-System.out.println("SuccessfullyDownloaded.");
+System.out.println("THIS PROGRAM IS EXECUTED BY SANTHOSH 221211101132");
+System.out.println("Successfully Downloaded.");
 
 }
-
-catch(MalformedURLExceptionmue)
-
+catch (MalformedURLException mue)
 {
-
-System.out.println("MalformedURLException raised");
-
+System.out.println("Malformed URL Exception raised");
 }
-
-catch(IOExceptionie)
-
+catch (IOException ie)
 {
-
-System.out.println("IOExceptionraised");
-
+System.out.println("IOException raised");
 }
-
 }
-
-publicstaticvoidmain(Stringargs[]) throws 
-
-IOException
-
+public static void main(String args[])
+throws IOException
 {
-
-Stringurl="https://www.drmgrdu.ac.in/contact.php";DownloadWebPage(url
-
-);
-
+String url ="https://www.drmgrdu.ac.in/contact.php";
+DownloadWebPage(url);
 }
-
 }
