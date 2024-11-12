@@ -11,7 +11,7 @@ public static void main(String[] args) throws IOException
 {DatagramSocket ds = new DatagramSocket(1234);
 byte[] receive = new byte[65535];
 DatagramPacket DpReceive = null;
-System.out.println("This program is done by PAMULA YOGANANDAM 201061101616");
+System.out.println("This program is done by SANTHOSH 221211101132");
 while (true)
 {
 DpReceive = new DatagramPacket(receive, receive.length);
