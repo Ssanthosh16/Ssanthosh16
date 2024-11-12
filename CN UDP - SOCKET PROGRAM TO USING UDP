@@ -1,121 +1,66 @@
-SERVER
+client
 
-import java.io.IOException; 
-
-import java.net.DatagramPacket; 
-
-importjava.net.DatagramSocket; 
-
-import java.net.InetAddress; 
-
-importjava.net.SocketException; 
-
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 public class udpBaseServer
-
 {
-
-publicstatic void main(String[]args)throwsIOException
-
-{DatagramSocketds=newDatagramSocket(1234); 
-
+public static void main(String[] args) throws IOException
+{DatagramSocket ds = new DatagramSocket(1234);
 byte[] receive = new byte[65535];
-
-DatagramPacketDpReceive=null;
-
-System.out.println("ThisprogramisdonebySURESH S221211101143"); while (true)
-
+DatagramPacket DpReceive = null;
+System.out.println("This program is done by PAMULA YOGANANDAM 201061101616");
+while (true)
 {
-
-DpReceive=newDatagramPacket(receive,receive.length); 
-
+DpReceive = new DatagramPacket(receive, receive.length);
 ds.receive(DpReceive);
-
-System.out.println("Client:-"+data(receive)); if 
-
-(data(receive).toString().equals("bye"))
-
+System.out.println("Client:-" + data(receive));
+if (data(receive).toString().equals("bye"))
 {
-
-System.out.println("Clientsentbye. .....EXITING");
+System.out.println("Client sent bye.....EXITING");
 
 break;
-
 }
-
-receive=new byte[65535];
-
+receive = new byte[65535];
 }
-
 }
-
-publicstaticStringBuilderdata(byte[]a)
-
+public static StringBuilder data(byte[] a)
 {
-
-if(a==null) 
-
+if (a == null)
 return null;
-
-StringBuilderret=newStringBuilder(); int 
-
-i = 0;
-
-while(a[i]!=0)
-
+StringBuilder ret = new StringBuilder();
+int i = 0;
+while (a[i] != 0)
 {
-
-ret.append((char)a[i]); 
-
+ret.append((char) a[i]);
 i++;
-
 }
-
-returnret;
-
+return ret;
 }
-
 }
 
 CLIENT
-
-25
-
-import java.io.IOException; 
-
-importjava.net.DatagramPacket; 
-
-importjava.net.DatagramSocket; 
-
-import java.net.InetAddress; 
-
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.Scanner;
-
-publicclass udpBaseClient
-
+public class udpBaseClient
 {
-
-publicstaticvoid main(Stringargs[])throwsIOException{
-
-System.out.println("ThisprogramisdonebySURESH S221211101143"); Scanner sc = new 
-
-Scanner(System.in);
-
-DatagramSocketds=newDatagramSocket(); 
-
-InetAddressip=InetAddress.getLocalHost(); 
-
+public static void main(String args[]) throws IOException{
+System.out.println("This program is done by PAMULA YOGANANDAM 201061101616");
+Scanner sc = new Scanner(System.in);
+DatagramSocket ds = new DatagramSocket();
+InetAddress ip = InetAddress.getLocalHost();
 byte buf[] = null;
-
 while (true){
-
-Stringinp=sc.nextLine(); 
-
+String inp = sc.nextLine();
 buf = inp.getBytes();
-
-DatagramPacketDpSend=newDatagramPacket(buf,buf.length,ip,1234); ds.send(DpSend);
-
-if(inp.equals("bye")) 
-
+DatagramPacket DpSend = new DatagramPacket(buf, buf.length, ip, 1234);
+ds.send(DpSend);
+if (inp.equals("bye"))
 break;
-
 }}}
+
