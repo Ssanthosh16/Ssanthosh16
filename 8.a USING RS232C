@@ -1,37 +1,20 @@
-import java.io.*; 
-
-importjavax.comm.*; 
-
-publicclass Rs232c{
-
-pulblicstaticvoidmain(Stringarg[]){ try {
-
-CommPortIdentifier ports = CommPortIdentifier.getPortIdentifier( "COM1" ); 
-
-SerialPort port = ( SerialPort )ports.open( "RS232C", 1000 ); 
-
-port.setSerialPortParams(9600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1, 
-
+import java.io.*;
+import javax.comm.*;
+public class Rs232c {
+pulblic static void main( String arg[] ) {
+try {
+CommPortIdentifier ports = CommPortIdentifier.getPortIdentifier( "COM1" );
+SerialPort port = ( SerialPort )ports.open( "RS232C", 1000 );
+port.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
 SerialPort.PARITY_NONE );
-
-port.setFlowControlMode(SerialPort.FLOWCONTROL_NONE); 
-
+port.setFlowControlMode( SerialPort.FLOWCONTROL_NONE );
 OutputStream out = port.getOutputStream();
-
-Stringmsg="Transferred"; 
-
-out.write(msg.getBytes()); 
-
+String msg = "Transferred";
+out.write( msg.getBytes() );
 out.flush();
-
 out.close();
-
 port.close();
-
 }
-
-catch(Exceptione){ System.out.println("Error:"+e.getMessage()); }
-
+catch( Exception e ) { System.out.println( "Error:" + e.getMessage() ); }
 }
-
 }
